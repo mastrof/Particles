@@ -1,0 +1,22 @@
+export
+    AbstractParticle,
+    Particle
+
+abstract type AbstractParticle{D,T} end
+
+struct Particle{D,T} <: AbstractParticle{D,T}
+    id::String #identifier
+    r::SVector{D,T} #position
+    v::SVector{D,T} #velocity
+end # struct
+
+function Particle(;
+                  id = "",
+                  r = zeros(SVector{3}),
+                  v = zero(r))
+    return Particle(id, r, v)
+end # function
+
+function Base.show(io::IO, p::AbstractParticle)
+    print(io, "Particle $(p.id) (r = $(p.r); v = $(p.v) )")
+end # function

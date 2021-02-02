@@ -1,0 +1,14 @@
+export
+    distancevector,
+    distance
+
+function distancevector(p1::AbstractParticle, p2::AbstractParticle)
+    return p2.r .- p1.r
+end # function
+
+function distancevector(p1::AbstractParticle, p2::AbstractParticle,
+                        boxedges)
+    δr = (p2.r .- p1.r) ./ boxedges
+    δr = (δr .- round.(δr)) .* boxedges
+    return δr
+end # function
