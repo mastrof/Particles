@@ -11,7 +11,7 @@ struct Particle{D,T} <: AbstractParticle{D,T}
 end # struct
 
 function Particle(; type = "", r = zeros(SVector{3}))
-    return Particle(type, r, v)
+    return Particle(type, r)
 end # function
 
 function Base.show(io::IO, p::AbstractParticle{D,T}) where D where T
