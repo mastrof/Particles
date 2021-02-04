@@ -8,18 +8,14 @@ abstract type AbstractParticle{D,T} end
 struct Particle{D,T} <: AbstractParticle{D,T}
     type::String #identifier
     r::SVector{D,T} #position
-    v::SVector{D,T} #velocity
 end # struct
 
-function Particle(;
-                  type = "",
-                  r = zeros(SVector{3}),
-                  v = zero(r))
+function Particle(; type = "", r = zeros(SVector{3}))
     return Particle(type, r, v)
 end # function
 
 function Base.show(io::IO, p::AbstractParticle{D,T}) where D where T
-    print(io, "Particle{$(D),$(T)} $(p.type) (r = $(p.r); v = $(p.v) )")
+    print(io, "Particle{$(D),$(T)} $(p.type) (r = $(p.r))")
 end # function
 
 
