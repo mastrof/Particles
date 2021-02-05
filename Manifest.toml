@@ -1,5 +1,12 @@
 # This file is machine-generated - editing it directly is not advised
 
+[[IOUtils]]
+git-tree-sha1 = "459d71262d9249f937409f58d102df1cf4135212"
+repo-rev = "master"
+repo-url = "../IOUtils"
+uuid = "d9ad65fd-e11b-4d6f-a86f-4de99853d17b"
+version = "0.1.0"
+
 [[Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
