@@ -44,3 +44,6 @@ function Atom(;
     return Atom(type, resid, resname, m, q, σ, ϵ, r, v)
 end # function
     
+function Base.show(io::IO, a::Atom)
+    print(io, "Atom $(a.type) (r = $(a.r); v = $(a.v))")
+end # function
