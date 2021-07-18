@@ -6,6 +6,17 @@ export
     MVParticle,
     Atom
 
+@doc raw"""
+    AbstractParticle{D,T}
+
+General interface for particle-like data.
+`D` is the dimensionality of the `AbstractParticle` (the number of coordinates that describe its position).
+`T` is the type of the `AbstractParticle` space (e.g., `Int` for particles on a lattice, `Float64` for real space, or even `ComplexF64`).
+
+`AbstractParticle` is on top of the hierarchy
+    `AbstractParticle` <: `AbstractMParticle`
+`AbstractMParticle` uses mutable structs, most convenient for particles whose position can change throughout a program.
+"""
 abstract type AbstractParticle{D,T} end
 
 abstract type AbstractMParticle{D,T} <: AbstractParticle{D,T} end

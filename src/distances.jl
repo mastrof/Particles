@@ -4,6 +4,20 @@ export
     msd,
     rmsd
 
+@doc raw"""
+    distancevector(p1::AbstractParticle, p2::AbstractParticle)
+    distancevector(p1::AbstractVector, p2::AbstractVector)
+
+Evaluates the vector distance of AbstractParticle `p2` from AbstractParticle `p1`.
+
+---
+    distancevector(p1::AbstractParticle, p2::AbstractParticle, box)
+    distancevector(p1::AbstractVector, p2::AbstractVector, box)
+
+Evaluates the vector distance of AbstractParticle `p2` from AbstractParticle `p1` with periodic boundary conditions in a box of size `box`.
+`box` can be either a Float64 (cubic box) or an AbstractVector (one value for each dimension of the particle space).
+_Currently only works with orthorhombic boxes._
+"""
 function distancevector(p1::AbstractVector, p2::AbstractVector)
     return p2 .- p1
 end # function
@@ -24,6 +38,13 @@ function distancevector(p1::AbstractParticle, p2::AbstractParticle, box)
     return δr
 end # function
 
+@doc raw"""
+    distance(p1, p2)
+    distance(p1, p2, box)
+
+Evaluates the (Euclidean) distance of AbstractParticle p2 from p1.
+See also `distancevector`.
+"""
 distance(p1, p2) = norm(distancevector(p1, p2))
 distance(p1, p2, box) = norm(distancevector(p1, p2, box))
 
