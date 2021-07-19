@@ -148,9 +148,10 @@ function unfold(conf1::T, conf0::T, box) where {S<:AbstractParticle,T<:AbstractV
         dx = distancevector(conf0[i], conf1[i])
         newx = zeros(D)
         for μ in 1:D            
-            L = boxtype <: AbstractArray ? box[μ] : box
-            sdx = sign(dx[μ])            
-            newx[μ] = abs(dx[μ]) > L/2 ? x[μ]-L*sdx : x[μ]            
+            L = boxtype <: AbstractArray ? box[μ] : box            
+            sdx = sign(dx[μ])
+            α = round(abs(dx[μ] / L))
+            newx[μ] = abs(dx[μ]) > L/2 ? x[μ]-L*α*sdx : x[μ]
         end # for
         unfolded[i] = Particle(ptype, SVector{D}(newx))
     end # for
