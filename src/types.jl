@@ -30,6 +30,7 @@ struct Particle{D,T} <: AbstractParticle{D,T}
     r::SVector{D,T} #position
 end # struct
 
+Particle{D,T}(; type = "", r = zeros(SVector{D,T})) where {D,T} = Particle(type,r)
 Particle(; type = "", r = zeros(SVector{3})) = Particle(type, r)
 Particle(r::SVector) = Particle(r = r)
 Particle(r) = Particle(r = SVector{length(r)}(r))
