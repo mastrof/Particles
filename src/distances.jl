@@ -134,8 +134,6 @@ end # function
 
 ### msd with unfolding
 
-Base.zero(p::T) where {T<:AbstractParticle} = T(type = p.type)
-
 function unfold(conf1::T, conf0::T, box) where {S<:AbstractParticle,T<:AbstractVector{S}}
     getdim(p::AbstractParticle{D,T}) where {D,T} = D
     D = getdim(first(conf1))

@@ -25,15 +25,77 @@ function Base.show(io::IO, p::T) where T<:AbstractParticle
     print(io, "$(T) $(p.type) (r = $(p.r))")
 end # function
 
+Base.zero(p::T) where {T<:AbstractParticle} = T(type = p.type)
+
+
+
 struct Particle{D,T} <: AbstractParticle{D,T}
     type::String #identifier
     r::SVector{D,T} #position
 end # struct
 
-Particle{D,T}(; type = "", r = zeros(SVector{D,T})) where {D,T} = Particle(type,r)
+Particle(type, r::AbstractVector) = Particle(type, SVector{length(r)}(r))
+Particle{D,T}(; type = "", r = zeros(SVector{D,T})) where {D,T} =
+    Particle(type, r)
 Particle(; type = "", r = zeros(SVector{3})) = Particle(type, r)
 Particle(r::SVector) = Particle(r = r)
-Particle(r) = Particle(r = SVector{length(r)}(r))
+Particle(r::AbstractVector) = Particle(r = SVector{length(r)}(r))
+
+
+struct MParticle{D,T} <: AbstractMParticle{D,T}
+    type::String #identifier
+    r::MVector{D,T} #position
+end # struct
+
+MParticle(type, r::AbstractVector) =
+    MParticle(type, MVector{length(r)}(r))
+MParticle{D,T}(; type = "", r = zeros(MVector{D,T})) where {D,T} =
+    MParticle(type, r)
+MParticle(; type = "", r = zeros(MVector{3})) = MParticle(type, r)
+MParticle(r::MVector) = MParticle(r = r)
+MParticle(r::AbstractVector) = MParticle(r = MVector{length(r)}(r))
+
+
+struct MVParticle{D,T} <: AbstractMParticle{D,T}
+    type::String #identifier
+    r::MVector{D,T} #position
+    v::MVector{D,T} #velocity
+end # struct
+
+MVParticle(type, r::AbstractVector, v::AbstractVector) =
+    MVParticle(type, MVector{length(r)}(r), MVector{length(v)}(v))
+MVParticle{D,T}(; type = "", r = zeros(MVector{D,T}),
+                v = zeros(MVector{D,T})) where {D,T} =
+                    MVParticle(type, r, v)
+#=
+MVParticle{D}(; type = "", r = zeros(MVector{D,Float64}),
+              v = zeros(MVector{D,Float64})) where D =
+                  MVParticle{D,Float64}(type, r, v)
+MVParticle(; type = "") = MVParticle{3,Float64}(type=type)
+=#
+function MVParticle(; type = "", r = nothing, v = nothing)
+    if isnothing(r) && isnothing(v)
+        MVParticle{3,Float64}(type = type)
+    elseif !isnothing(r) && isnothing(v)
+        D = length(r)
+        T = eltype(r)
+        MVParticle{D,T}(type = type, r = r, v = zeros(MVector{D,T}))
+    elseif isnothing(r) && !isnothing(v)
+        D = length(v)
+        T = eltype(v)
+        MVParticle{D,T}(type = type, r = zeros(MVector{D,T}), v = v)
+    else
+        MVParticle(type, r, v)
+    end # if
+end # function
+####
+MVParticle(r::MVector) = MVParticle(r = r, v = zeros(MVector{length(r)}))
+MVParticle(r::AbstractVector) = MVParticle(MVector{length(r)}(r))
+MVParticle(r::MVector, v::MVector) = MVParticle(r = r, v = v)
+MVParticle(r::AbstractVector, v::AbstractVector) =
+    MVParticle(r = MVector{length(r)}(r), v = MVector{length(v)}(v))
+
+
 
 struct Atom <: AbstractParticle{3,Float64}
     type::String
@@ -63,28 +125,3 @@ end # function
 function Base.show(io::IO, a::Atom)
     print(io, "Atom $(a.type) (r = $(a.r); v = $(a.v))")
 end # function
-
-
-struct MParticle{D,T} <: AbstractMParticle{D,T}
-    type::String
-    r::MVector{D,T}
-end # struct
-
-MParticle(; type = "", r = zeros(MVector{3})) = MParticle(type, r)
-MParticle(r::MVector) = MParticle(r = r)
-MParticle(r) = MParticle(r = MVector{length(r)}(r))
-
-
-struct MVParticle{D,T} <: AbstractMParticle{D,T}
-    type::String
-    r::MVector{D,T}
-    v::MVector{D,T}
-end # struct
-
-MVParticle(; type = "", r = zeros(MVector{3}), v = zeros(MVector{3})) = MVParticle(type, r, v)
-MVParticle(r::MVector) = MVParticle(r = r)
-MVParticle(r) = MVParticle(r = MVector{length(r)}(r))
-MVParticle(r::MVector, v::MVector) = MVParticle(r = r, v = v)
-MVParticle(r, v) = MVParticle(r = MVector{length(r)}(r), v = MVector{length(v)}(v))
-
-
